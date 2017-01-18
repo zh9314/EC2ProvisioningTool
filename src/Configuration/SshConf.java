@@ -95,8 +95,9 @@ public class SshConf {
 				ps = Runtime.getRuntime().exec("sh "+runSSHPath);  
 				ps.waitFor();
 				
-				ps = Runtime.getRuntime().exec("rm "+runSSHPath+" "+runFilePath);  
-				ps.waitFor();
+				//Thread.sleep(2000);
+				//ps = Runtime.getRuntime().exec("rm "+runSSHPath+" "+runFilePath);  
+				//ps.waitFor();
 	    	}
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block

@@ -243,7 +243,7 @@ public class EC2Agent {
 					if(os.contains("OS"))
 						cmdPrix = "ping -c 1 -t 1 ";
 					Process process = Runtime.getRuntime().exec(cmdPrix+pub_ins[0]);
-					//System.out.println("ping -c 1 -t 1 "+pub_ins[0]);
+					System.out.println("ping -c 1 -w 1 "+pub_ins[0]);
 					InputStreamReader ir = new InputStreamReader(process.getInputStream());
 					BufferedReader input = new BufferedReader (ir);
 					input.readLine();
@@ -252,7 +252,7 @@ public class EC2Agent {
 						allActive = false;
 						continue;
 					}
-					//System.out.println(line);
+					System.out.println(line);
 					if(line.contains(" ms"))
 						tags.set(i, Boolean.TRUE);
 					else

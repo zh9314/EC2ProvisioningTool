@@ -100,6 +100,7 @@ public class toscaSubAnalysis {
 		try {
             File file = new File(toscaFilePath);
             YamlStream stream = Yaml.loadStream(file);
+            boolean find_conn = false;
             for (Iterator iter = stream.iterator(); iter.hasNext();) {
                 HashMap hashMap = (HashMap) iter.next();
                 for (Iterator iter2 = hashMap.entrySet().iterator(); iter2.hasNext();) {
@@ -113,8 +114,10 @@ public class toscaSubAnalysis {
                     	subnets = json2subnet(jsonValue);
                     if(keyS.equals("components"))
                     	nodes = json2node(jsonValue);
-                    if(keyS.equals("connections"))
+                    if(keyS.equals("connections")){
                     	connections = json2connection(jsonValue);
+                    	find_conn = true;
+                    }
                     if(keyS.equals("publicKeyPath"))
                     	publicKeyPath = valueS;
                     if(keyS.equals("userName")){
@@ -122,7 +125,8 @@ public class toscaSubAnalysis {
                     	System.out.println("UserName: "+userName);
                     }
                 }
-            }
+            }if(!find_conn)
+            	connections = new ArrayList<Connection>();
             
             completeEthInfo();
             

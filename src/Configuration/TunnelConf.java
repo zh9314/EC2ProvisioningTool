@@ -132,8 +132,9 @@ public class TunnelConf {
 			ps.waitFor();
 	        ps = Runtime.getRuntime().exec("sh "+runFilePath);  
 			ps.waitFor();
-			ps = Runtime.getRuntime().exec("rm "+runFilePath+" "+confPath);  
-			ps.waitFor();
+			//Thread.sleep(2000);
+			//ps = Runtime.getRuntime().exec("rm "+runFilePath+" "+confPath);  
+			//ps.waitFor();
 			System.out.println("Configuration for node "+info.nodeName+" is done!");
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
