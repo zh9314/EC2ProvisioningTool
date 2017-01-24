@@ -230,8 +230,10 @@ public class EC2Agent {
 		ArrayList<Boolean> tags = new ArrayList<Boolean>();
 		for(int i = 0 ; i<addresses.size() ; i++)
 			tags.add(Boolean.FALSE);
-		while(true){
+		int count = 0;
+		while(count<300){
 			boolean allActive = true;
+			count++;
 			for(int i = 0 ; i<addresses.size() ; i++)
 			{
 				if(tags.get(i))
