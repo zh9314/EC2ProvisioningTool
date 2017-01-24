@@ -86,6 +86,7 @@ public class SshConf {
 			    fw.write("scp -i "+certDir+location+".pem "+sshOption+" "+runFilePath+" ubuntu@"+pubAddress+":~/ssh.sh\n");
 			    fw.write("scp -i "+certDir+location+".pem "+sshOption+" "+pubKeyPath+" ubuntu@"+pubAddress+":~/"+pubKeyName+"\n");
 			    fw.write("ssh -i "+certDir+location+".pem "+sshOption+" ubuntu@"+pubAddress+" \"sudo ./ssh.sh\"\n");
+			    fw.write("sleep 2s");
 			    fw.write("ssh -i "+certDir+location+".pem "+sshOption+" ubuntu@"+pubAddress+" \"rm ssh.sh\"\n");
 			    fw.close();
 			    
