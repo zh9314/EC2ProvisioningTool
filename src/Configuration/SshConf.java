@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import Provisioning.ARP;
+import Provisioning.Logger;
 
 public class SshConf {
+	
+	private static Logger swLog;
+	
 	private String pubAddress = "";
 	private String location = "";
 	private String userName = "";
@@ -16,12 +20,13 @@ public class SshConf {
 	
 	private String sshOption = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
 	
-	public SshConf(String certDir, String pa, String lo, String un, String pk){
+	public SshConf(String certDir, String pa, String lo, String un, String pk, Logger log){
 		pubAddress = pa;
 		location = lo;
 		userName = un;
 		pubKeyPath = pk;
 		this.certDir = certDir;
+		this.swLog = log;
 	}
 	
 	/*public void firstConnect(){
@@ -95,6 +100,8 @@ public class SshConf {
 				
 				ps = Runtime.getRuntime().exec("sh "+runSSHPath);  
 				ps.waitFor();
+				
+				swLog.log("DEBUG", "SshConf.confUserSSH", "SSH configuration for user "+userName+" has been completed!");
 				
 				//Thread.sleep(2000);
 				//ps = Runtime.getRuntime().exec("rm "+runSSHPath+" "+runFilePath);  

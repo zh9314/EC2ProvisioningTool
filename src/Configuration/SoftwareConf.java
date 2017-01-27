@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import Provisioning.ARP;
+import Provisioning.Logger;
 
 public class SoftwareConf {
+	
+	private static Logger swLog;
+	
 	private String scriptPath = "";
 	private String installDir = "";
 	private String pubAddress = "";
@@ -18,13 +22,14 @@ public class SoftwareConf {
 	private String sshOption = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
 	
 	
-	public SoftwareConf(String cd, String sp, String id, String pa, String lo, String un){
+	public SoftwareConf(String cd, String sp, String id, String pa, String lo, String un, Logger log){
 		scriptPath = sp;
 		installDir = id;
 		pubAddress = pa;
 		location = lo;
 		userName = un;
 		certDir = cd;
+		swLog = log;
 	}
 	
 	public void installSofware(String OStype){
@@ -72,6 +77,7 @@ public class SoftwareConf {
 				ps.waitFor();
 				
 				System.out.println("end "+runFilePath);
+				swLog.log("DEBUG", "SoftwareConf.installSoftware", "The script of "+scriptPath+" has been executed!");
 				
 				//Thread.sleep(20000);
 				

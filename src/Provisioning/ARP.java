@@ -185,6 +185,7 @@ public class ARP {
 			}
 			if(netmask.equals("null") || subnetAddress.equals("null") || privateAddress.equals("null")){
 				System.out.println("Unexpected error!");
+				swLog.log("ERROR", "ARP.setupNodesWithSubnet", "Unexpected error!EXIT!");
 				System.exit(-1);
 			}
 			int netmaskNum = 0;
@@ -358,18 +359,18 @@ public class ARP {
 			String OStype = tmpNode.OStype;
 			
 			System.out.println("OS: "+OStype);
-			SshConf sshConf = new SshConf(certDir, pubAddress, location, userName, pubKeyPath);
+			SshConf sshConf = new SshConf(certDir, pubAddress, location, userName, pubKeyPath, swLog);
 			//sshConf.firstConnect();
 			
 			if(!pubKeyPath.equals("null"))
 				sshConf.confUserSSH(OStype);
 			
 			SoftwareConf softConf = new SoftwareConf(certDir, scriptPath, installDir, 
-					pubAddress, location, userName);
+					pubAddress, location, userName, swLog);
 			softConf.installSofware(OStype);
 			
 			
-			TunnelConf tunnelConf = new TunnelConf(certDir, tmpNode, location);
+			TunnelConf tunnelConf = new TunnelConf(certDir, tmpNode, location, swLog);
 			String confName = tunnelConf.generateConfFile();
 			tunnelConf.runConf(confName);
 			  

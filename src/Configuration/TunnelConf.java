@@ -4,11 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import Provisioning.ARP;
+import Provisioning.Logger;
 import toscaTransfer.Eth;
 import toscaTransfer.Node;
 
 
 public class TunnelConf {
+	
+	private static Logger swLog;
 	
 	private Node info = new Node();
 	private String location = "";
@@ -17,10 +20,11 @@ public class TunnelConf {
 	private String sshOption = "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
 	
 	
-	public TunnelConf(String cd, Node curNode, String lo){
+	public TunnelConf(String cd, Node curNode, String lo, Logger log){
 		info = curNode;
 		location = lo;
 		certDir = cd;
+		swLog = log;
 	}
 	
 	private String getSubnet(int netmaskNum, String privateAddress){
@@ -135,6 +139,7 @@ public class TunnelConf {
 			//Thread.sleep(2000);
 			//ps = Runtime.getRuntime().exec("rm "+runFilePath+" "+confPath);  
 			//ps.waitFor();
+			swLog.log("DEBUG", "TunnelConf.runConf", "Configuration for node "+info.nodeName+" is done!");
 			System.out.println("Configuration for node "+info.nodeName+" is done!");
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
