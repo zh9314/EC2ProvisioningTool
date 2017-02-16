@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Provisioning.Logger;
+import org.json.JSONException;
 
 public class toscaSubAnalysis {
 	public ArrayList<Node> nodes;
@@ -172,7 +173,7 @@ public class toscaSubAnalysis {
 		return new String(target);
 	}
 	
-	private ArrayList<subnet> json2subnet(String jsonString){
+	private ArrayList<subnet> json2subnet(String jsonString) throws JSONException{
 		ArrayList<subnet> linkSet = new ArrayList<subnet>();
 		JSONArray jsonLinks = new JSONArray(jsonString);
 		for(int i = 0 ; i<jsonLinks.length() ; i++){
@@ -186,7 +187,7 @@ public class toscaSubAnalysis {
 		return linkSet;
 	}
 	
-	private ArrayList<Connection> json2connection(String jsonString){
+	private ArrayList<Connection> json2connection(String jsonString) throws JSONException{
 		ArrayList<Connection> connectionSet = new ArrayList<Connection>();
 		JSONArray jsonConnections = new JSONArray(jsonString);
 		for(int i = 0 ; i<jsonConnections.length() ; i++){
@@ -218,7 +219,7 @@ public class toscaSubAnalysis {
 		return false;
 	}
 	
-	private ArrayList<Node> json2node(String jsonString){
+	private ArrayList<Node> json2node(String jsonString) throws JSONException{
 		ArrayList<Node> nodeSet = new ArrayList<Node>();
 		JSONArray jsonNodes = new JSONArray(jsonString);
 		for(int i = 0 ; i<jsonNodes.length() ; i++){
