@@ -20,7 +20,7 @@ public class ConfLoader {
 		this.confFilePath = confFilePath;
 	}
 	
-	public boolean loadConfiguration(){
+	public boolean loadConfiguration(String currentDir){
 		File conf = new File(confFilePath);
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(conf));
@@ -42,10 +42,13 @@ public class ConfLoader {
 			}
 			if(AWSAccessKeyId.equals("") || AWSSecretKey.equals("") ||
 					KeyDir.equals("") || SupportDomainString.equals("") ||
-					DatabaseDir.equals("") || LogsDir.equals(""))
+					LogsDir.equals(""))
 				return false;
 			KeyDir = rephaseTheDir(KeyDir);
-			DatabaseDir = rephaseTheDir(DatabaseDir);
+			if(DatabaseDir.equals(""))
+				DatabaseDir = currentDir+"database/EC2/";
+			else
+				DatabaseDir = rephaseTheDir(DatabaseDir);
 			LogsDir = rephaseTheDir(LogsDir);
 			SupportDomains = SupportDomainString.split(", ");
 			return true;

@@ -437,7 +437,7 @@ public class ARP {
 		// TODO Auto-generated method stub
 		currentDir = getCurrentDir();
 		ConfLoader confLoader = new ConfLoader(args[0]);
-		confLoader.loadConfiguration();
+		confLoader.loadConfiguration(currentDir);
 		swLog = new Logger(confLoader.LogsDir+"ec2.log");
 		swLog.log("INFO", "ARP.main", "Create topology from "+args[1]);
 		loadInfoFromDB(confLoader.DatabaseDir);
