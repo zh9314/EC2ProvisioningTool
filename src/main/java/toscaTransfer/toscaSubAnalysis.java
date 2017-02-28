@@ -2,16 +2,14 @@ package toscaTransfer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.ho.yaml.Yaml;
-import org.ho.yaml.YamlStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Provisioning.Logger;
+import java.io.FileInputStream;
 import org.json.JSONException;
 
 public class toscaSubAnalysis {
@@ -100,36 +98,39 @@ public class toscaSubAnalysis {
     public void generateInfrastructure(String toscaFilePath) {
         try {
             File file = new File(toscaFilePath);
-            YamlStream stream = Yaml.loadStream(file);
+//            YamlStream stream = Yaml.loadStream(file);
+            org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml();
+            Map<String, Object> hashMap = (Map<String, Object>) yaml.load(new FileInputStream(file));
+
             boolean find_conn = false;
-            for (Iterator iter = stream.iterator(); iter.hasNext();) {
-                HashMap hashMap = (HashMap) iter.next();
-                for (Iterator iter2 = hashMap.entrySet().iterator(); iter2.hasNext();) {
-                    Map.Entry entry = (Map.Entry) iter2.next();
-                    Object key = entry.getKey();
-                    Object value = entry.getValue();
-                    String keyS = key.toString();
-                    String valueS = value.toString();
-                    String jsonValue = transfer2json(valueS);
-                    if (keyS.equals("subnets")) {
-                        subnets = json2subnet(jsonValue);
-                    }
-                    if (keyS.equals("components")) {
-                        nodes = json2node(jsonValue);
-                    }
-                    if (keyS.equals("connections")) {
-                        connections = json2connection(jsonValue);
-                        find_conn = true;
-                    }
-                    if (keyS.equals("publicKeyPath")) {
-                        publicKeyPath = valueS;
-                    }
-                    if (keyS.equals("userName")) {
-                        userName = valueS;
-                        System.out.println("UserName: " + userName);
-                    }
+//            for (Iterator iter = stream.iterator(); iter.hasNext();) {
+//                HashMap hashMap = (HashMap) iter.next();
+            for (Iterator iter2 = hashMap.entrySet().iterator(); iter2.hasNext();) {
+                Map.Entry entry = (Map.Entry) iter2.next();
+                Object key = entry.getKey();
+                Object value = entry.getValue();
+                String keyS = key.toString();
+                String valueS = value.toString();
+                String jsonValue = transfer2json(valueS);
+                if (keyS.equals("subnets")) {
+                    subnets = json2subnet(jsonValue);
+                }
+                if (keyS.equals("components")) {
+                    nodes = json2node(jsonValue);
+                }
+                if (keyS.equals("connections")) {
+                    connections = json2connection(jsonValue);
+                    find_conn = true;
+                }
+                if (keyS.equals("publicKeyPath")) {
+                    publicKeyPath = valueS;
+                }
+                if (keyS.equals("userName")) {
+                    userName = valueS;
+                    System.out.println("UserName: " + userName);
                 }
             }
+//            }
             if (!find_conn) {
                 connections = new ArrayList<Connection>();
             }
