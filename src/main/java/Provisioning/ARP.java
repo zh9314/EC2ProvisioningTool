@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,8 +72,8 @@ public class ARP {
 
     /**
      * Convert netmask int to string (255.255.255.0 returned if nm > 32 or nm <
-     * 1)
-	 * @
+     * 1) @
+     *
      *
      * param nm
      * @return
