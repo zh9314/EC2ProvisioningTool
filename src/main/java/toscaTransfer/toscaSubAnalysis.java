@@ -2,7 +2,6 @@ package toscaTransfer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -10,6 +9,7 @@ import org.json.JSONObject;
 
 import Provisioning.Logger;
 import java.io.FileInputStream;
+import java.util.List;
 import org.json.JSONException;
 
 public class toscaSubAnalysis {
@@ -105,34 +105,29 @@ public class toscaSubAnalysis {
             boolean find_conn = false;
 //            for (Iterator iter = stream.iterator(); iter.hasNext();) {
 //                HashMap hashMap = (HashMap) iter.next();
-            for (Iterator iter2 = hashMap.entrySet().iterator(); iter2.hasNext();) {
-                Map.Entry entry = (Map.Entry) iter2.next();
-                Object key = entry.getKey();
-                Object value = entry.getValue();
-                String keyS = key.toString();
-                String valueS = value.toString();
-                String jsonValue = transfer2json(valueS);
-                if (keyS.equals("subnets")) {
-                    subnets = json2subnet(jsonValue);
-                }
-                if (keyS.equals("components")) {
-                    nodes = json2node(jsonValue);
-                }
-                if (keyS.equals("connections")) {
-                    connections = json2connection(jsonValue);
-                    find_conn = true;
-                }
-                if (keyS.equals("publicKeyPath")) {
-                    publicKeyPath = valueS;
-                }
-                if (keyS.equals("userName")) {
-                    userName = valueS;
-                    System.out.println("UserName: " + userName);
-                }
+            publicKeyPath = (String) hashMap.get("publicKeyPath");
+
+            userName = (String) hashMap.get("userName");
+            System.out.println("UserName: " + userName);
+
+            List<Map<String, Object>> subnetsValue = (List<Map<String, Object>>) hashMap.get("subnets");
+            if (subnetsValue != null) {
+                subnets = json2subnet(toJsonStringArray(subnetsValue));
             }
-//            }
+
+            List<Map<String, Object>> componentsValue = (List<Map<String, Object>>) hashMap.get("components");
+            if (componentsValue != null) {
+                nodes = json2node(toJsonStringArray(componentsValue));
+                find_conn = true;
+            }
+
+            List<Map<String, Object>> connectionsValue = (List<Map<String, Object>>) hashMap.get("connections");
+            if (connectionsValue != null) {
+                connections = json2connection(toJsonStringArray(connectionsValue));
+                find_conn = true;
+            }
             if (!find_conn) {
-                connections = new ArrayList<Connection>();
+                connections = new ArrayList<>();
             }
 
             completeEthInfo();
@@ -181,7 +176,7 @@ public class toscaSubAnalysis {
     }
 
     private ArrayList<subnet> json2subnet(String jsonString) throws JSONException {
-        ArrayList<subnet> linkSet = new ArrayList<subnet>();
+        ArrayList<subnet> linkSet = new ArrayList<>();
         JSONArray jsonLinks = new JSONArray(jsonString);
         for (int i = 0; i < jsonLinks.length(); i++) {
             JSONObject jsonLink = jsonLinks.getJSONObject(i);
@@ -228,13 +223,13 @@ public class toscaSubAnalysis {
     }
 
     private ArrayList<Node> json2node(String jsonString) throws JSONException {
-        ArrayList<Node> nodeSet = new ArrayList<Node>();
+        ArrayList<Node> nodeSet = new ArrayList<>();
         JSONArray jsonNodes = new JSONArray(jsonString);
         for (int i = 0; i < jsonNodes.length(); i++) {
             JSONObject jsonNode = jsonNodes.getJSONObject(i);
             Node tmp = new Node();
             tmp.type = jsonNode.getString("type");
-            tmp.nodeType = jsonNode.getString("nodetype");
+            tmp.nodeType = jsonNode.getString("nodeType");
             tmp.OStype = jsonNode.getString("OStype");
             tmp.nodeName = jsonNode.getString("name");
             tmp.domain = jsonNode.getString("domain");
@@ -276,6 +271,25 @@ public class toscaSubAnalysis {
             nodeSet.add(tmp);
         }
         return nodeSet;
+    }
+
+    public static String map2JsonString(Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject(map);
+        return jsonObject.toString();
+    }
+
+    private String toJsonStringArray(List<Map<String, Object>> value) {
+        StringBuilder jsonArrayString = new StringBuilder();
+        jsonArrayString.append("[");
+        String prefix = "";
+        for (Map<String, Object> map : value) {
+            String jsonStr = map2JsonString(map);
+            jsonArrayString.append(prefix);
+            prefix = ",";
+            jsonArrayString.append(jsonStr);
+        }
+        jsonArrayString.append("]");
+        return jsonArrayString.toString();
     }
 
 }
