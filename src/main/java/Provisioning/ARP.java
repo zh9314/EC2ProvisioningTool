@@ -75,8 +75,7 @@ public class ARP {
      * 1) @
      *
      *
-     * param nm
-     * @return
+     * param nm @return
      */
     public static String netmaskIntToString(int nm) {
         if ((nm > 32) || (nm < 1)) {
@@ -376,7 +375,7 @@ public class ARP {
             SshConf sshConf = new SshConf(certDir, pubAddress, location, userName, pubKeyPath, swLog);
             //sshConf.firstConnect();
 
-            if (!pubKeyPath.equals("null")) {
+            if (pubKeyPath != (null)) {
                 sshConf.confUserSSH(OStype);
             }
 
