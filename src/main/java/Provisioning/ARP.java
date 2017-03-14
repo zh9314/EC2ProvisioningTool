@@ -248,6 +248,7 @@ public class ARP {
             System.out.println("Node " + tmpNode.nodeName + " is setup. InstanceID: " + instanceId);
             swLog.log("INFO", "ARP.setupNodesWithSubnet", "Node " + tmpNode.nodeName + " is setup. InstanceID: " + instanceId);
         }
+        System.err.println("Exiting setupNodesWithSubnet");
     }
 
     private static void completeRemotePubInfo(ArrayList<Node> nodes) {
